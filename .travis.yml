@@ -1,0 +1,30 @@
+language: bash
+env:
+  global:
+    - TFLINT_VER='v0.7.0'
+    - TERRAFORM_VER='0.11.7'
+branches:
+  only:
+  - master
+before_install:
+  # Install tflint
+  - "wget https://github.com/wata727/tflint/releases/download/${TFLINT_VER}/tflint_linux_amd64.zip"
+  - "unzip tflint_linux_amd64.zip && chmod +x tflint"
+  # Install Terraform
+  - "wget https://releases.hashicorp.com/terraform/0.11.7/terraform_${TERRAFORM_VER}_linux_amd64.zip"
+  - "unzip terraform_${TERRAFORM_VER}_linux_amd64.zip && chmod +x terraform"
+script:
+  # Test case
+  # 1. tflint
+  - "./tflint"
+  # 2. terraform init and fmt
+  - "scripts/test_terraform.sh"
+    
+notifications:
+  email: false
+  slack:
+    template:
+      - "Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository_slug}@%{branch} by %{author} %{result} in %{duration}"
+      - 'Commit message : %{commit_message}'
+    rooms:
+      secure: "l5RkLZjGGm4gHbwg7vIh4VSGdFHp+rvEbFxFBB3YutyJHQoQb5RGD8XSVC2yVnbCbuy4YkPiED+O0z5I1jmVz1yjaDNGHOKS/vI/vL8xS2xlLl4pGAgQ+1xm2U5sGflAAggyLSSudQttr8AUTtIqT3ZdDsiEz7jSFnnnaXxH3M+Swueoay88vTWRyUzVoaMYjO8vZFXlc1Ejzm1MZsXn1WuUEBR6+xr+IK/z0BDZpBSo6Wxd5S6t8JcXpsk3UL5KVYQgZPQCGukebz9h3BswLCBeG9/C+BcaT4vY2+YuGSnIdRcBHVBwh9T7UjhaQk1ETkrEkEz9t5HqdvPpB6dDjsuSc08VihONArnHW9Oq38HGlMjmC+7qLWO0mUMtRgCHiIqZj5NZsZVEMG321lfAuY2rEKTap5MlnnayLtfvFpq2K9v3gcArxg6H2YiXMkr9niZYzMJ7d7pylpWl1MJ5j8waET5aspmNmimI2zf8eQyUK3egVZn764unD4FmirvkvJl25jFLRIc5sNXeaBeeSwAtdDD3FYdKYE5b4h2833BAdUp+XMt0T99fRA7APZZW3RSM8UZbvCMalBVvSdL3gHaJlW0djLVs7CiHAMKK2qXpkoSH9XWgG0oY9/yphcg9lgugLarwWcM5wPB5eQEUfHo8d0uAJ7ozsacXK45vWcw="

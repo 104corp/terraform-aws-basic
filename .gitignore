@@ -1,9 +1,7 @@
-#  Local .terraform directories
-**/.terraform/*
-
-# .tfstate files
-*.tfstate
-*.tfstate.*
-
-# .tfvars files
-*.tfvars
+.terraform
+*.tfstate*
+.kitchen
+terraform.tfstate
+terraform.tfvars
+Gemfile.lock
+*.log
