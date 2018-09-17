@@ -2,26 +2,43 @@ terraform {
   required_version = ">= 0.10.3" # introduction of Local Values configuration language feature
 }
 
+#########
+# data
+#########
+
 data "aws_caller_identity" "current" {}
 
-######
+#######
 # IAM
-######
+#######
 
-data "template_file" "trust_saml" {
-  template = "${file("${path.module}/policies/trust_saml.json")}"
+resource "aws_iam_account_alias" "this" {
+  count = "${length(var.account_alias) > 0 ? 1 : 0}"
 
-  vars {
-    trust_account_id   = "${data.aws_caller_identity.current.account_id}"
-    saml_provider_name = "${var.saml_provider_name}"
-  }
+  account_alias = "${var.account_alias}"
 }
 
-data "template_file" "describe_all" {
-  template = "${file("${path.module}/policies/describe_all.json")}"
+resource "aws_iam_account_password_policy" "this" {
+  count = "${var.create_account_password_policy ? 1 : 0}"
 
-  vars {
-    trust_account_id   = "${aws_dynamodb_table.asmweb_api_log.arn}"
-    saml_provider_name = "azure-sso"
-  }
+  max_password_age               = "${var.iam_max_password_age}"
+  minimum_password_length        = "${var.iam_minimum_password_length}"
+  allow_users_to_change_password = "${var.iam_allow_users_to_change_password}"
+  hard_expiry                    = "${var.iam_hard_expiry}"
+  password_reuse_prevention      = "${var.iam_password_reuse_prevention}"
+  require_lowercase_characters   = "${var.iam_require_lowercase_characters}"
+  require_uppercase_characters   = "${var.iam_require_uppercase_characters}"
+  require_numbers                = "${var.iam_require_numbers}"
+  require_symbols                = "${var.iam_require_symbols}"
+}
+
+##########################
+# IAM for saml provider
+##########################
+
+resource "aws_iam_saml_provider" "this" {
+  count = "${length(var.iam_saml_provider_azure_file) > 0 ? 1 : 0}"
+
+  name                   = "${var.iam_saml_provider_azure_name}"
+  saml_metadata_document = "${var.iam_saml_provider_azure_file}"
 }
