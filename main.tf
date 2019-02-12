@@ -31,14 +31,3 @@ resource "aws_iam_account_password_policy" "this" {
   require_numbers                = "${var.iam_require_numbers}"
   require_symbols                = "${var.iam_require_symbols}"
 }
-
-##########################
-# IAM for saml provider
-##########################
-
-resource "aws_iam_saml_provider" "this" {
-  count = "${length(var.iam_saml_provider_azure_file) > 0 ? 1 : 0}"
-
-  name                   = "${var.iam_saml_provider_azure_name}"
-  saml_metadata_document = "${var.iam_saml_provider_azure_file}"
-}

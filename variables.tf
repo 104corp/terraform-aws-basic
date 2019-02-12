@@ -56,12 +56,3 @@ variable "iam_require_symbols" {
   description = "A boolean of whether to require symbols for user passwords"
   default     = false
 }
-
-variable "iam_saml_provider_azure_name" {
-  description = "A string of iam saml provider name with azure"
-  default     = "azure-sso"
-}
-
-variable "iam_saml_provider_azure_file" {
-  description = "A string of iam saml provider file with azure"
-}
