@@ -31,3 +31,63 @@ resource "aws_iam_account_password_policy" "this" {
   require_numbers                = "${var.iam_require_numbers}"
   require_symbols                = "${var.iam_require_symbols}"
 }
+
+#IAM Role Role-Administrator
+data "template_file" "Role-Administrator" {
+  template = "${file("${path.module}/assume_role_policies/Role-Administrator.json")}"
+}
+resource "aws_iam_role" "Role-Administrator" {
+  name = "Role-Administrator"
+  assume_role_policy = "${data.template_file.Role-Administrator.rendered}"
+  tags = {
+      tag-key = "Name"
+      tag-value="Role-Administrator"
+  }
+}
+resource "aws_iam_policy_attachment" "AdministratorAccess" {
+  name       = "AdministratorAccess"
+  roles      = "Role-Administrator"
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+}
+
+#IAM Role Role-DescribeOnly
+data "template_file" "Role-DescribeOnly" {
+  template = "${file("${path.module}/assume_role_policies/Role-DescribeOnly.json")}"
+}
+resource "aws_iam_role" "Role-DescribeOnly" {
+  name = "Role-DescribeOnly"
+  assume_role_policy = "${data.template_file.Role-DescribeOnly.rendered}"
+  tags = {
+      tag-key = "Name"
+      tag-value="Role-DescribeOnly"
+  }
+}
+
+data "template_file" "Role-DescribeOnly-Policy" {
+  template = "${file("${path.module}/iam_policies/Role-DescribeOnly.json")}"
+}
+
+resource "aws_iam_policy" "Role-DescribeOnly-Policy" {
+  name   = "Role-DescribeOnly"
+  policy = "${data.template_file.Role-DescribeOnly-Policy.rendered}"
+}
+
+#IAM Role Role-Otter
+data "template_file" "Role-Otter" {
+  template = "${file("${path.module}/assume_role_policies/Role-Otter.json")}"
+}
+
+resource "aws_iam_role" "Role-Otter" {
+  name = "Role-Otter"
+  assume_role_policy = "${data.template_file.Role-Otter.rendered}"
+  tags = {
+      tag-key = "Name"
+      tag-value="Role-Otter"
+  }
+}
+
+resource "aws_iam_policy_attachment" "AdministratorAccess" {
+  name       = "AdministratorAccess"
+  roles      = "Role-Otter"
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+}
