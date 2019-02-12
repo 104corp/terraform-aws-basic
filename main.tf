@@ -62,11 +62,9 @@ resource "aws_iam_role" "Role-DescribeOnly" {
       tag-value="Role-DescribeOnly"
   }
 }
-
 data "template_file" "Role-DescribeOnly-Policy" {
   template = "${file("${path.module}/iam_policies/Role-DescribeOnly.json")}"
 }
-
 resource "aws_iam_policy" "Role-DescribeOnly-Policy" {
   name   = "Role-DescribeOnly"
   policy = "${data.template_file.Role-DescribeOnly-Policy.rendered}"
@@ -76,7 +74,6 @@ resource "aws_iam_policy" "Role-DescribeOnly-Policy" {
 data "template_file" "Role-Otter" {
   template = "${file("${path.module}/assume_role_policies/Role-Otter.json")}"
 }
-
 resource "aws_iam_role" "Role-Otter" {
   name = "Role-Otter"
   assume_role_policy = "${data.template_file.Role-Otter.rendered}"
@@ -85,7 +82,6 @@ resource "aws_iam_role" "Role-Otter" {
       tag-value="Role-Otter"
   }
 }
-
 resource "aws_iam_policy_attachment" "AdministratorAccess" {
   name       = "AdministratorAccess"
   roles      = "Role-Otter"
