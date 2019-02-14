@@ -44,11 +44,6 @@ resource "aws_iam_role" "Role-Administrator" {
       tag-value="Role-Administrator"
   }
 }
-resource "aws_iam_policy_attachment" "Role-Administrator-Policy" {
-  name       = "AdministratorAccess"
-  roles      = "Role-Administrator"
-  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
-}
 
 #IAM Role Role-DescribeOnly
 data "template_file" "Role-DescribeOnly" {
@@ -65,8 +60,9 @@ resource "aws_iam_role" "Role-DescribeOnly" {
 data "template_file" "Role-DescribeOnly-Policy" {
   template = "${file("${path.module}/iam_policies/Role-DescribeOnly.json")}"
 }
-resource "aws_iam_policy" "Role-DescribeOnly-Policy" {
+resource "aws_iam_policy_attachment" "Role-DescribeOnly-Policy" {
   name   = "Role-DescribeOnly"
+  roles  = "Role-DescribeOnly"
   policy = "${data.template_file.Role-DescribeOnly-Policy.rendered}"
 }
 
@@ -82,8 +78,8 @@ resource "aws_iam_role" "Role-Otter" {
       tag-value="Role-Otter"
   }
 }
-resource "aws_iam_policy_attachment" "Role-Otter-Policy" {
+resource "aws_iam_policy_attachment" "AdministratorAccess" {
   name       = "AdministratorAccess"
-  roles      = "Role-Otter"
+  roles      = ["Role-Administrator","Role-Otter"]
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
