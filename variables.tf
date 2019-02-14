@@ -56,3 +56,27 @@ variable "iam_require_symbols" {
   description = "A boolean of whether to require symbols for user passwords"
   default     = false
 }
+
+#######
+# Cloudtrail
+#######
+
+variable "enable_logging" {
+  default     = "true"
+  description = "Enable logging for the trail"
+}
+
+variable "enable_log_file_validation" {
+  default     = "true"
+  description = "Specifies whether log file integrity validation is enabled. Creates signed digest for validated contents of logs"
+}
+
+variable "is_multi_region_trail" {
+  default     = "false"
+  description = "Specifies whether the trail is created in the current region or in all regions"
+}
+
+variable "include_global_service_events" {
+  default     = "false"
+  description = "Specifies whether the trail is publishing events from global services such as IAM to the log files"
+}
