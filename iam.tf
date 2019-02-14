@@ -44,7 +44,7 @@ resource "aws_iam_role" "Role-Administrator" {
       tag-value="Role-Administrator"
   }
 }
-resource "aws_iam_policy_attachment" "AdministratorAccess" {
+resource "aws_iam_policy_attachment" "Role-Administrator-Policy" {
   name       = "AdministratorAccess"
   roles      = "Role-Administrator"
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
@@ -82,7 +82,7 @@ resource "aws_iam_role" "Role-Otter" {
       tag-value="Role-Otter"
   }
 }
-resource "aws_iam_policy_attachment" "AdministratorAccess" {
+resource "aws_iam_policy_attachment" "Role-Otter-Policy" {
   name       = "AdministratorAccess"
   roles      = "Role-Otter"
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
