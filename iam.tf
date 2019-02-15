@@ -66,7 +66,7 @@ resource "aws_iam_policy" "Role-DescribeOnly-Policy" {
 }
 resource "aws_iam_policy_attachment" "Role-DescribeOnly-Policy" {
   name       = "Role-DescribeOnly-Policy"
-  roles      = "Role-DescribeOnly"
+  roles      = ["${aws_iam_role.Role-DescribeOnly.name}"]
   policy_arn = "${aws_iam_policy.Role-DescribeOnly-Policy.rendered}"
 }
 
@@ -84,6 +84,6 @@ resource "aws_iam_role" "Role-Otter" {
 }
 resource "aws_iam_policy_attachment" "AdministratorAccess" {
   name       = "AdministratorAccess"
-  roles      = ["${aws_iam_role.Role-DescribeOnly.name}","${aws_iam_role.Role-Otter.name}"]
+  roles      = ["${aws_iam_role.Role-Administrator.name}","${aws_iam_role.Role-Otter.name}"]
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
