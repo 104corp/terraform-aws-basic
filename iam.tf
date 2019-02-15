@@ -67,7 +67,7 @@ resource "aws_iam_policy" "Role-DescribeOnly-Policy" {
 resource "aws_iam_policy_attachment" "Role-DescribeOnly-Policy" {
   name       = "Role-DescribeOnly-Policy"
   roles      = "Role-DescribeOnly"
-  policy_arn = "${aws_iam_policy.Role-DescribeOnly-Policy}"
+  policy_arn = "${aws_iam_policy.Role-DescribeOnly-Policy.rendered}"
 }
 
 #IAM Role Role-Otter
